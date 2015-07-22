@@ -1,0 +1,51 @@
+import numpy as np
+# Put any initialization logic here.  The context object will be passed to
+# the other methods in your algorithm.
+def initialize(context):
+    schedule_function(rebalance,date_rules.every_day(),time_rules.market_open())
+    
+    context.stocks = symbols(
+                     
+        'VLTC',
+        
+                           
+    ) 
+
+    context.period = 10 # Last x prices
+ 
+
+#look up how to trade price channels/ bollinger bands
+def rebalance(context, data):
+    for stock in data:
+        highHistory = history(context.period,'1d','high') # daily high for each day in period
+        lowHistory = history(context.period,'1d','low')  # daily low for each day in period
+        high = max(highHistory[stock][:-1]) # high up to and not including the last one
+        low = min(lowHistory[stock][:-1]) # low up to and not including the last one
+        
+        price = data[stock].price
+        volume = data[stock].volume
+        weight = .11
+        
+        if price > high:
+            order_target_percent(stock, weight)           
+        elif price < low:
+            order_target_percent(stock, -weight)    
+        else:
+            #order_target_percent(stock, 0)
+            pass
+            
+        record('price', price)
+        record('periodHigh', high)
+        record('periodLow', low)
+               
+        
+def handle_data(context, data):
+    #  highHistory = history(context.period,'1d','high') # daily high for each day in period
+    #  lowHistory = history(context.period,'1d','low')  # daily low for each day in period
+    # for stock in context.stocks:
+    #     highList = highHistory[stock].tolist()
+    #     lowList = lowHistory[stock].tolist()
+        
+    #     periodHigh = max(highList)
+    #     periodLow = min(lowList)
+    pass
