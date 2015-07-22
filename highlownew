@@ -6,7 +6,8 @@ def initialize(context):
     
     context.stocks = symbols(
                      
-        'VLTC',
+        #'EUO',
+        'GENE'
         
                            
     ) 
